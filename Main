@@ -1,0 +1,58 @@
+package com.company;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		String text_from_user = get_string();
+		float avg_letters_per_100_words =(count_letter(text_from_user)/count_word(text_from_user)* 100);
+		float avg_sentences_per_100_words = (count_sentence(text_from_user)/count_word(text_from_user)*100) ;
+		float coleman_liau_index = (0.0588f * avg_letters_per_100_words) - (0.296f * avg_sentences_per_100_words) - 15.8f;
+		if( coleman_liau_index < 1){
+			System.out.println("Before Grade 1");
+		}
+		else if(coleman_liau_index >= 16){
+			System.out.println("Grade 16+");
+		}
+		else {
+			System.out.println("Grade " + Math.round(coleman_liau_index));
+		}
+	}
+
+	static String get_string(){
+		Scanner input = new Scanner(System.in);
+		System.out.print("Text: ");
+		String text = input.nextLine();
+		return text;
+}
+	static float count_letter(String user_input){
+		int letter_counter = 0;
+		for(int i = user_input.length() -1; i >=0; i= i -1){
+			if ( Character.isLetter(user_input.charAt(i))){
+				letter_counter++;
+			}
+		}
+		return letter_counter;
+	}
+
+	static float count_word(String user_input){
+		int word_counter = 1;
+		for(int i = user_input.length() -1 ; i >=0 ; i = i-1){
+			if( Character.isSpaceChar(user_input.charAt(i))){
+				word_counter++;
+			}
+		}
+		return word_counter;
+	}
+
+	static float count_sentence(String user_input){
+		int sentence_counter= 0;
+		String test_text = "";
+		for(int i = user_input.length() -1; i >= 0; i = i -1){
+			test_text = "" + user_input.charAt(i);
+			if( test_text.equals(".") || test_text.equals("!") || test_text.equals("?")){
+				sentence_counter++;
+			}
+		}
+		return sentence_counter;
+	}
+}
